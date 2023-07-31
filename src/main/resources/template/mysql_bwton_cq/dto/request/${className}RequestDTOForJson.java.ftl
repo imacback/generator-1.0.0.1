@@ -1,0 +1,77 @@
+<#include "/macro.include"/>
+<#include "/custom.include">
+<#assign className = table.className>
+package ${basePackage}.data.domain.${module};
+
+import java.io.Serializable;
+import java.util.Date;
+import lombok.*;
+import com.google.gson.annotations.SerializedName;
+import com.alibaba.fastjson.annotation.JSONField;
+
+/**
+ * ***********************************************************
+ * Copyright  ${year} 八维通科技有限公司 Inc.All rights reserved.  *
+ * ***********************************************************
+ *
+ * description:
+ * @author ${author}
+ * @date ${.now}
+ */
+@Data
+public class ${className}RequestDTOForJson implements Serializable {
+
+<#list table.columns as column>
+    <#if column.javaType == "Boolean">
+
+    /**
+    * ${column.columnAlias}
+    */
+    @SerializedName("${column.sqlName}")
+    @JSONField(name = "${column.sqlName}")
+    private Integer ${column.columnNameLower};
+    <#elseif column.javaType == "java.lang.String">
+
+    /**
+    * ${column.columnAlias}
+    */
+    @SerializedName("${column.sqlName}")
+    @JSONField(name = "${column.sqlName}")
+    private String ${column.columnNameLower};
+    <#elseif column.javaType == "java.util.Date">
+
+    /**
+    * ${column.columnAlias}
+    */
+    @SerializedName("${column.sqlName}")
+    @JSONField(name = "${column.sqlName}")
+    private Date ${column.columnNameLower};
+    <#elseif column.javaType == "java.lang.Long">
+
+    /**
+    * ${column.columnAlias}
+    */
+    @SerializedName("${column.sqlName}")
+    @JSONField(name = "${column.sqlName}")
+    private Long ${column.columnNameLower};
+    <#elseif column.javaType == "java.lang.Integer">
+
+    /**
+    * ${column.columnAlias}
+    */
+    @SerializedName("${column.sqlName}")
+    @JSONField(name = "${column.sqlName}")
+    private Integer  ${column.columnNameLower};
+    <#else>
+
+    /**
+    * ${column.columnAlias}
+    */
+    @SerializedName("${column.sqlName}")
+    @JSONField(name = "${column.sqlName}")
+    private ${column.javaType} ${column.columnNameLower};
+    </#if>
+
+</#list>
+
+}

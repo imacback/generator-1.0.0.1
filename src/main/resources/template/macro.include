@@ -1,0 +1,36 @@
+<#-- 本文件包含一些公共的函数,本文件会被其它模板自动include -->
+
+<#assign dollar = '$'>
+
+<#--过滤前缀-->
+<#macro filter prefix_arr sql_value value uppercase ><#local case1=false/><#local case2=false/><#list prefix_arr as x><#if sql_value?starts_with(x) && uppercase==false><#local case1=true/><#elseif sql_value?starts_with(x) && uppercase==true><#local case2=true/></#if></#list><#if case1==true>${value?substring(1)?uncap_first}<#elseif case2==true>${value?substring(1)?cap_first}<#else>${value}</#if></#macro>
+<#macro genGetterAndSetter propertyName,javaType>
+	public ${javaType} get${propertyName?cap_first}() {
+		return ${propertyName};
+	}
+	public void set${propertyName?cap_first}(${javaType} ${propertyName}) {
+		this.${propertyName} = ${propertyName};
+	}
+</#macro>
+
+<#-- 将value变成jsp el表达式,主要由于FreeMarker生成表达式不方便 -->
+<#macro jspEl value>${r"${"}${value}}</#macro>
+
+<#-- 生成java构造函数 -->
+<#macro generateConstructor constructor>
+	public ${constructor}(){
+	}
+
+	public ${constructor}(
+	<#list table.compositeIdColumns as column>
+		${column.javaType} ${column.columnNameLower}<#if column_has_next>,</#if>
+	</#list>
+	){
+	<#list table.compositeIdColumns as column>
+		<#if column.pk>
+		this.${column.columnNameLower} = ${column.columnNameLower};
+		</#if>
+	</#list>
+	}
+
+</#macro>
